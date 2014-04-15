@@ -8,7 +8,7 @@ setup(
     packages = find_packages(),
     scripts = ['scripts/rw'],
 
-    install_requires = ['docopt'],
+    install_requires = ['docopt', 'six'],
     
     author = "Ben Pringle",
     author_email = "ben.pringle@gmail.com",
