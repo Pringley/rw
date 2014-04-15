@@ -3,13 +3,14 @@
 Generate random words.
 
 Usage:
-  rw [--dict=<wordfile>] <numberofwords>
+  rw [--dict=<wordfile>] [-s | --secure] <numberofwords>
   rw (-h | --help)
   rw --version
 
 Options:
   -h --help             Show this screen.
   --version             Show version.
+  -s --secure           Use cryptography-strength random numbers
   --dict=<wordfile>     Use given word file (optional).
 
 """
@@ -24,9 +25,13 @@ import pkg_resources
 
 __VERSION__ = '0.0.2'
 
-def generate_words(numberofwords, wordlist):
+def generate_words(numberofwords, wordlist, secure=None):
     """Generate a list of random words from wordlist."""
-    return [random.choice(wordlist) for _ in range(numberofwords)]
+    if not secure:
+        chooser = random.choice
+    else:
+        chooser = random.SystemRandom().choice
+    return [chooser(wordlist) for _ in range(numberofwords)]
 
 def read_wordlist(dictfile):
     """Read a wordlist from file (one word per line)."""
@@ -42,6 +47,7 @@ def load_stream(filename):
 def cli():
     """Run the command line interface."""
     args = docopt.docopt(__doc__, version=__VERSION__)
+    secure = args['--secure']
     numberofwords = int(args['<numberofwords>'])
 
     dictpath = args['--dict']
@@ -52,5 +58,5 @@ def cli():
     with dictfile:
         wordlist = read_wordlist(dictfile)
 
-    words = generate_words(numberofwords, wordlist)
+    words = generate_words(numberofwords, wordlist, secure=secure)
     print(' '.join(words))
