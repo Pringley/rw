@@ -22,7 +22,7 @@ import six
 import docopt
 import pkg_resources
 
-__VERSION__ = '0.0.1'
+__VERSION__ = '0.0.2'
 
 def generate_words(numberofwords, wordlist):
     """Generate a list of random words from wordlist."""
